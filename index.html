@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valence Wave - Pitch Deck</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: #F8F8F8;
+            overflow: hidden;
+            color: #4B4B4B;
+        }
+
+        .deck-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            display: none;
+            padding: 60px 80px;
+            background: white;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .slide-header {
+            font-size: 48px;
+            font-weight: 700;
+            color: #017AFF;
+            margin-bottom: 40px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .card {
+            background: #F8F8F8;
+            border-radius: 16px;
+            padding: 24px 32px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            margin-bottom: 20px;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            background: #017AFF;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .nav-btn:hover {
+            background: #0162cc;
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .slide-counter {
+            font-family: 'Montserrat', sans-serif;
+            color: #4B4B4D;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* Slide 1 - Title */
+        .hero-title {
+            font-size: 72px;
+            font-weight: 700;
+            color: #017AFF;
+            margin-bottom: 20px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .hero-subtitle {
+            font-size: 32px;
+            font-weight: 600;
+            color: #4B4B4B;
+            margin-bottom: 60px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .hero-founder {
+            font-size: 20px;
+            color: #4B4B4B;
+            margin-bottom: 10px;
+        }
+
+        .hero-email {
+            font-size: 18px;
+            color: #FF6800;
+        }
+
+        .hero-background {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 50%;
+            height: 50%;
+            opacity: 0.05;
+            background: linear-gradient(135deg, #017AFF 0%, #FF6800 100%);
+            clip-path: polygon(100% 0, 100% 100%, 0 100%);
+        }
+
+        /* Slide 2 - Problem */
+        .problem-list {
+            display: grid;
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        .problem-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            background: #F8F8F8;
+            padding: 24px 28px;
+            border-radius: 14px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .problem-icon {
+            width: 40px;
+            height: 40px;
+            background: #017AFF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .problem-text {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #4B4B4B;
+        }
+
+        /* Slide 3 - Market */
+        .market-container {
+            display: flex;
+            gap: 60px;
+            align-items: center;
+            margin-top: 40px;
+            flex: 1;
+        }
+
+        .market-visual {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .market-bar {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .market-bar-label {
+            width: 80px;
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+            color: #4B4B4B;
+        }
+
+        .market-bar-fill {
+            height: 60px;
+            background: #017AFF;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            color: white;
+            font-weight: 600;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .market-bar-fill.sam {
+            background: #FF6800;
+        }
+
+        .market-bar-fill.som {
+            background: #4B4B4B;
+        }
+
+        .market-text {
+            flex: 1;
+        }
+
+        .market-desc {
+            font-size: 18px;
+            line-height: 1.7;
+            color: #4B4B4B;
+            margin-top: 10px;
+        }
+
+        .market-note {
+            background: #F8F8F8;
+            padding: 24px;
+            border-radius: 12px;
+            margin-top: 30px;
+            font-size: 16px;
+            font-style: italic;
+            color: #4B4B4B;
+        }
+
+        /* Slide 4 - Solution */
+        .solution-intro {
+            font-size: 20px;
+            line-height: 1.6;
+            color: #4B4B4B;
+            margin-bottom: 40px;
+            padding: 24px;
+            background: #F8F8F8;
+            border-radius: 12px;
+            border-left: 4px solid #017AFF;
+        }
+
+        .solution-pillars {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .pillar-card {
+            background: #F8F8F8;
+            padding: 32px 24px;
+            border-radius: 16px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+            text-align: center;
+        }
+
+        .pillar-icon {
+            width: 70px;
+            height: 70px;
+            background: #017AFF;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+        }
+
+        .pillar-card:nth-child(2) .pillar-icon {
+            background: #FF6800;
+        }
+
+        .pillar-card:nth-child(3) .pillar-icon {
+            background: #4B4B4B;
+        }
+
+        .pillar-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #017AFF;
+            margin-bottom: 12px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .pillar-desc {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #4B4B4B;
+        }
+
+        /* Slide 5 - Product */
+        .product-container {
+            display: flex;
+            gap: 40px;
+            flex: 1;
+        }
+
+        .product-mockup {
+            flex: 1;
+            background: #F8F8F8;
+            border-radius: 16px;
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .mockup-device {
+            width: 100%;
+            max-width: 500px;
+            aspect-ratio: 16/10;
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #4B4B4B;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .mockup-header {
+            height: 30px;
+            background: #017AFF;
+            border-radius: 6px;
+        }
+
+        .mockup-content {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .mockup-block {
+            background: #F8F8F8;
+            border-radius: 6px;
+        }
+
+        .product-features {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .feature-item {
+            font-size: 17px;
+            line-height: 1.5;
+            padding-left: 24px;
+            position: relative;
+            color: #4B4B4B;
+        }
+
+        .feature-item:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #017AFF;
+            font-size: 24px;
+        }
+
+        /* Slide 6 - Traction */
+        .traction-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .traction-card {
+            background: #F8F8F8;
+            padding: 32px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+        }
+
+        .traction-number {
+            font-size: 48px;
+            font-weight: 700;
+            color: #FF6800;
+            margin-bottom: 12px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .traction-label {
+            font-size: 18px;
+            color: #4B4B4B;
+            font-weight: 600;
+        }
+
+        .traction-quote {
+            grid-column: 1 / -1;
+            background: #017AFF;
+            color: white;
+            padding: 28px;
+            border-radius: 14px;
+            font-style: italic;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        /* Slide 7 - Business Model */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-top: 30px;
+        }
+
+        .pricing-card {
+            background: #F8F8F8;
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+        }
+
+        .pricing-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #017AFF;
+            margin-bottom: 8px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .pricing-amount {
+            font-size: 28px;
+            font-weight: 700;
+            color: #FF6800;
+            margin-bottom: 12px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .pricing-desc {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #4B4B4B;
+            margin-bottom: 12px;
+        }
+
+        .pricing-includes {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #4B4B4B;
+        }
+
+        /* Slide 8 - GTM */
+        .gtm-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-top: 30px;
+        }
+
+        .gtm-card {
+            background: #F8F8F8;
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+            display: flex;
+            gap: 20px;
+        }
+
+        .gtm-number {
+            width: 50px;
+            height: 50px;
+            background: #017AFF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            flex-shrink: 0;
+        }
+
+        .gtm-content {
+            flex: 1;
+        }
+
+        .gtm-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #4B4B4B;
+            margin-bottom: 8px;
+        }
+
+        .gtm-desc {
+            font-size: 15px;
+            line-height: 1.5;
+            color: #4B4B4B;
+        }
+
+        /* Slide 9 - Team */
+        .team-container {
+            max-width: 900px;
+            margin: 40px auto 0;
+        }
+
+        .team-card {
+            background: #F8F8F8;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+        }
+
+        .team-name {
+            font-size: 32px;
+            font-weight: 700;
+            color: #017AFF;
+            margin-bottom: 8px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .team-title {
+            font-size: 20px;
+            color: #FF6800;
+            margin-bottom: 24px;
+            font-weight: 600;
+        }
+
+        .team-experience {
+            display: grid;
+            gap: 12px;
+        }
+
+        .team-experience-item {
+            font-size: 17px;
+            line-height: 1.5;
+            padding-left: 24px;
+            position: relative;
+            color: #4B4B4B;
+        }
+
+        .team-experience-item:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #017AFF;
+            font-size: 24px;
+        }
+
+        .team-note {
+            margin-top: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            font-size: 16px;
+            color: #4B4B4B;
+            font-style: italic;
+        }
+
+        /* Slide 10 - Ask */
+        .ask-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .ask-header {
+            background: #017AFF;
+            color: white;
+            padding: 32px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .ask-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .ask-amount {
+            font-size: 20px;
+            line-height: 1.6;
+        }
+
+        .funds-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .fund-item {
+            background: #F8F8F8;
+            padding: 24px;
+            border-radius: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .fund-label {
+            font-size: 17px;
+            color: #4B4B4B;
+            font-weight: 600;
+        }
+
+        .fund-percent {
+            font-size: 32px;
+            font-weight: 700;
+            color: #FF6800;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .contact-footer {
+            text-align: center;
+            padding: 24px;
+            background: #F8F8F8;
+            border-radius: 12px;
+        }
+
+        .contact-label {
+            font-size: 18px;
+            color: #4B4B4B;
+            margin-bottom: 8px;
+        }
+
+        .contact-email {
+            font-size: 22px;
+            color: #017AFF;
+            font-weight: 600;
+        }
+
+        @media (max-width: 1200px) {
+            .slide {
+                padding: 40px 50px;
+            }
+            .hero-title {
+                font-size: 56px;
+            }
+            .slide-header {
+                font-size: 38px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="deck-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active" data-slide="1">
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 1;">
+                <h1 class="hero-title">Valence Wave</h1>
+                <h2 class="hero-subtitle">Placement Intelligence Platform</h2>
+                <p class="hero-founder">Founder: Krishna Mahawar — NIT Raipur</p>
+                <p class="hero-email">krishna.mahawar.here@gmail.com</p>
+            </div>
+            <div class="hero-background"></div>
+        </div>
+
+        <!-- Slide 2: The Problem -->
+        <div class="slide" data-slide="2">
+            <h2 class="slide-header">The Problem</h2>
+            <div class="problem-list">
+                <div class="problem-item">
+                    <div class="problem-icon">📋</div>
+                    <p class="problem-text">Students lack a clear, semester-wise roadmap to secure internships and placements.</p>
+                </div>
+                <div class="problem-item">
+                    <div class="problem-icon">🔗</div>
+                    <p class="problem-text">Referrals depend on informal networks, often unreliable and unstructured.</p>
+                </div>
+                <div class="problem-item">
+                    <div class="problem-icon">📊</div>
+                    <p class="problem-text">Colleges have poor visibility into hiring trends, CGPA thresholds, and recruiter expectations.</p>
+                </div>
+                <div class="problem-item">
+                    <div class="problem-icon">❓</div>
+                    <p class="problem-text">Students waste effort on scattered preparation resources without knowing what actually matters.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Market Opportunity -->
+        <div class="slide" data-slide="3">
+            <h2 class="slide-header">Market Opportunity</h2>
+            <div class="market-container">
+                <div class="market-visual">
+                    <div class="market-bar">
+                        <div class="market-bar-label">TAM</div>
+                        <div class="market-bar-fill" style="width: 100%;">
+                            <div>
+                                <div style="font-size: 20px;">₹2,250 crores</div>
+                                <div style="font-size: 14px; opacity: 0.9;">1.5M engineering graduates annually</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="market-bar">
+                        <div class="market-bar-label">SAM</div>
+                        <div class="market-bar-fill sam" style="width: 70%;">
+                            <div>
+                                <div style="font-size: 20px;">₹152 crores</div>
+                                <div style="font-size: 14px; opacity: 0.9;">101,500 IIT/NIT/Tier-1 students</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="market-bar">
+                        <div class="market-bar-label">SOM</div>
+                        <div class="market-bar-fill som" style="width: 35%;">
+                            <div>
+                                <div style="font-size: 20px;">Year 1: ₹13.6L</div>
+                                <div style="font-size: 14px; opacity: 0.9;">Year 3: ₹54.5L</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="market-note">
+                Yearly repeatable market due to new batches entering continuously
+            </div>
+        </div>
+
+        <!-- Slide 4: The Solution -->
+        <div class="slide" data-slide="4">
+            <h2 class="slide-header">The Solution</h2>
+            <div class="solution-intro">
+                A placement operating system that provides personalized roadmaps, verified alumni referrals, and hiring intelligence.
+            </div>
+            <div class="solution-pillars">
+                <div class="pillar-card">
+                    <div class="pillar-icon">🗺️</div>
+                    <h3 class="pillar-title">Roadmap Engine</h3>
+                    <p class="pillar-desc">AI-personalized, week-by-week preparation plan.</p>
+                </div>
+                <div class="pillar-card">
+                    <div class="pillar-icon">🤝</div>
+                    <h3 class="pillar-title">Referral Network</h3>
+                    <p class="pillar-desc">Verified alumni referral workflow tied to preparation progress.</p>
+                </div>
+                <div class="pillar-card">
+                    <div class="pillar-icon">📈</div>
+                    <h3 class="pillar-title">Insights Dashboard</h3>
+                    <p class="pillar-desc">CGPA ranges, company trends, question banks, hiring behavior.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Product -->
+        <div class="slide" data-slide="5">
+            <h2 class="slide-header">Product</h2>
+            <div class="product-container">
+                <div class="product-mockup">
+                    <div class="mockup-device">
+                        <div class="mockup-header"></div>
+                        <div class="mockup-content">
+                            <div class="mockup-block"></div>
+                            <div class="mockup-block"></div>
+                            <div class="mockup-block"></div>
+                            <div class="mockup-block"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-features">
+                    <div class="feature-item">Weekly and semester-level preparation path</div>
+                    <div class="feature-item">Role/company-specific templates</div>
+                    <div class="feature-item">Resume scoring + improvement prompts</div>
+                    <div class="feature-item">Skill benchmarking</div>
+                    <div class="feature-item">Data-driven insights: CGPA cutoffs, hiring timelines</div>
+                    <div class="feature-item">Verified alumni referral pipeline</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Traction -->
+        <div class="slide" data-slide="6">
+            <h2 class="slide-header">Traction &amp; Early Validation</h2>
+            <div class="traction-grid">
+                <div class="traction-card">
+                    <div class="traction-number">250+</div>
+                    <div class="traction-label">Beta Users</div>
+                </div>
+                <div class="traction-card">
+                    <div class="traction-number">40+</div>
+                    <div class="traction-label">Alumni Onboarded</div>
+                </div>
+                <div class="traction-card">
+                    <div class="traction-number">5</div>
+                    <div class="traction-label">College Societies Interested</div>
+                </div>
+                <div class="traction-card">
+                    <div class="traction-number">3</div>
+                    <div class="traction-label">Pilot Programs Planned</div>
+                </div>
+                <div class="traction-quote">
+                    "Finally, a structured approach to placement prep. The roadmap feature showed me exactly what I was missing." — Beta user, NIT student
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Business Model -->
+        <div class="slide" data-slide="7">
+            <h2 class="slide-header">Business Model</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-title">Student Subscription</div>
+                    <div class="pricing-amount">₹79/month</div>
+                    <div class="pricing-desc">Billed quarterly</div>
+                    <div class="pricing-includes">Low-friction entry, quarterly billing improves retention</div>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-title">Premium Student Plan</div>
+                    <div class="pricing-amount">₹249/3 months</div>
+                    <div class="pricing-includes">
+                        • Personalized AI roadmap<br>
+                        • Resume audit<br>
+                        • Company-specific paths<br>
+                        • Referral eligibility
+                    </div>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-title">College Partnerships</div>
+                    <div class="pricing-amount">₹40K–₹1.2L/year</div>
+                    <div class="pricing-includes">
+                        • Dashboards for CGPA analytics<br>
+                        • Workshops<br>
+                        • Roadmap distribution system<br>
+                        • Alumni network activation
+                    </div>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-title">Cohort Programs</div>
+                    <div class="pricing-amount">₹1,500–₹3,000</div>
+                    <div class="pricing-desc">Per student</div>
+                    <div class="pricing-includes">
+                        SDE roadmap cohort, Core engineering roadmap, Research intern roadmap
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: GTM Strategy -->
+        <div class="slide" data-slide="8">
+            <h2 class="slide-header">Go-to-Market Strategy</h2>
+            <div class="gtm-grid">
+                <div class="gtm-card">
+                    <div class="gtm-number">1</div>
+                    <div class="gtm-content">
+                        <div class="gtm-title">Campus Penetration</div>
+                        <div class="gtm-desc">Ambassador programs, targeted study groups, placement societies</div>
+                    </div>
+                </div>
+                <div class="gtm-card">
+                    <div class="gtm-number">2</div>
+                    <div class="gtm-content">
+                        <div class="gtm-title">College Pilots</div>
+                        <div class="gtm-desc">Start with 3–6 colleges for dashboard + roadmap trials</div>
+                    </div>
+                </div>
+                <div class="gtm-card">
+                    <div class="gtm-number">3</div>
+                    <div class="gtm-content">
+                        <div class="gtm-title">Digital Content</div>
+                        <div class="gtm-desc">Case-study threads, roadmap breakdowns, and alumni insights</div>
+                    </div>
+                </div>
+                <div class="gtm-card">
+                    <div class="gtm-number">4</div>
+                    <div class="gtm-content">
+                        <div class="gtm-title">Alumni Acquisition</div>
+                        <div class="gtm-desc">LinkedIn outreach + incentive-free but clear-purpose onboarding</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Team -->
+        <div class="slide" data-slide="9">
+            <h2 class="slide-header">Team</h2>
+            <div class="team-container">
+                <div class="team-card">
+                    <div class="team-name">Krishna Mahawar</div>
+                    <div class="team-title">Founder, B.Tech 3rd year (NIT Raipur)</div>
+                    <div class="team-experience">
+                        <div class="team-experience-item">Leading student domains, tech clubs, doc &amp; design teams</div>
+                        <div class="team-experience-item">Exposure to placements ecosystem</div>
+                        <div class="team-experience-item">Prior experience in early-stage ventures and student-led initiatives</div>
+                        <div class="team-experience-item">Strong writing, content, operations, and community-building foundation</div>
+                    </div>
+                    <div class="team-note">
+                        Initial technical hires planned: backend engineer, data scientist
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Ask & Use of Funds -->
+        <div class="slide" data-slide="10">
+            <h2 class="slide-header">Ask &amp; Use of Funds</h2>
+            <div class="ask-container">
+                <div class="ask-header">
+                    <div class="ask-title">ASK</div>
+                    <div class="ask-amount">Seeking funding for product development, early hiring, and pilot deployments</div>
+                </div>
+                <div class="funds-grid">
+                    <div class="fund-item">
+                        <span class="fund-label">Product &amp; Engineering</span>
+                        <span class="fund-percent">40%</span>
+                    </div>
+                    <div class="fund-item">
+                        <span class="fund-label">College Partnerships / Ops</span>
+                        <span class="fund-percent">30%</span>
+                    </div>
+                    <div class="fund-item">
+                        <span class="fund-label">Content &amp; GTM</span>
+                        <span class="fund-percent">20%</span>
+                    </div>
+                    <div class="fund-item">
+                        <span class="fund-label">Legal/Admin</span>
+                        <span class="fund-percent">10%</span>
+                    </div>
+                </div>
+                <div class="contact-footer">
+                    <div class="contact-label">Contact</div>
+                    <div class="contact-email">krishna.mahawar.here@gmail.com</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">‹</button>
+        <span class="slide-counter"><span id="currentSlide">1</span> / 10</span>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">›</button>
+    </div>
+
+    <script>
+        let currentSlideIndex = 1;
+        const totalSlides = 10;
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            
+            if (n > totalSlides) {
+                currentSlideIndex = totalSlides;
+            }
+            if (n < 1) {
+                currentSlideIndex = 1;
+            }
+            
+            slides.forEach(slide => {
+                slide.classList.remove('active');
+            });
+            
+            slides[currentSlideIndex - 1].classList.add('active');
+            
+            document.getElementById('currentSlide').textContent = currentSlideIndex;
+            
+            // Update button states
+            document.getElementById('prevBtn').disabled = currentSlideIndex === 1;
+            document.getElementById('nextBtn').disabled = currentSlideIndex === totalSlides;
+        }
+
+        function changeSlide(direction) {
+            currentSlideIndex += direction;
+            showSlide(currentSlideIndex);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' && currentSlideIndex < totalSlides) {
+                changeSlide(1);
+            } else if (e.key === 'ArrowLeft' && currentSlideIndex > 1) {
+                changeSlide(-1);
+            }
+        });
+
+        // Initialize
+        showSlide(currentSlideIndex);
+    </script>
+</body>
+</html>
